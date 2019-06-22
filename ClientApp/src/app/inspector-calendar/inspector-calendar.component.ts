@@ -1,14 +1,11 @@
-
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { MatSelectModule } from '@angular/material/select';
 import { Title } from '@angular/platform-browser';
-import * as moment from 'moment';
 import * as _ from "lodash";
-import { Event } from '@angular/router';
-import { Year } from "../models/Year";
+import * as moment from 'moment';
+import { months } from "../../data/month-data";
 import { CalendarDate } from "../models/CalendarDate";
 import { Month } from "../models/Month";
-
+import { Year } from "../models/Year";
 
 @Component({
   selector: 'app-inspector-calendar',
@@ -17,8 +14,6 @@ import { Month } from "../models/Month";
 })
 
 export class InspectorCalendarComponent implements OnInit, OnChanges {
-
-
   currentDate = moment();
   dayNames = ['Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun'];
   weeks: CalendarDate[][] = [];
@@ -44,13 +39,11 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.generateCalendar();
-
   }
 
   // load dropdowns
 
   loadYearOptions(): Year[] {
-
     let result: Year[] = [];
     var currentYear = new Date().getFullYear();
     var firstYear = currentYear - 10;
@@ -67,61 +60,8 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
   }
 
   loadMonths(): Month[] {
-    let result: Month[] = [
-      {
-        value: 0,
-        locale: "en-US",
-        name: "January"
-      },
-      {
-        value: 1,
-        locale: "en-US",
-        name: "February"
-      }, {
-        value: 2,
-        locale: "en-US",
-        name: "March"
-      }, {
-        value: 3,
-        locale: "en-US",
-        name: "April"
-      }, {
-        value: 4,
-        locale: "en-US",
-        name: "May"
-      }, {
-        value: 5,
-        locale: "en-US",
-        name: "June"
-      }, {
-        value: 6,
-        locale: "en-US",
-        name: "July"
-      }, {
-        value: 7,
-        locale: "en-US",
-        name: "August"
-      }, {
-        value: 8,
-        locale: "en-US",
-        name: "September"
-      }, {
-        value: 9,
-        locale: "en-US",
-        name: "October"
-      }, {
-        value: 10,
-        locale: "en-US",
-        name: "November"
-      }, {
-        value: 11,
-        locale: "en-US",
-        name: "December"
-      }
-    ];
-
+    let result: Month[] = months;
     this.selectedMonth = new Date().getMonth();
-
     return result;
   }
 
@@ -183,7 +123,3 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
       });
   }
 }
-
-
-
-
