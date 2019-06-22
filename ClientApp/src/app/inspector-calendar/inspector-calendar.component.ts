@@ -1,26 +1,14 @@
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
+import { Title } from '@angular/platform-browser';
 import * as moment from 'moment';
 import * as _ from "lodash";
 import { Event } from '@angular/router';
+import { Year } from "../models/Year";
+import { CalendarDate } from "../models/CalendarDate";
+import { Month } from "../models/Month";
 
-export class CalendarDate {
-  mDate: moment.Moment;
-  selected?: boolean;
-  today?: boolean;
-}
-
-export class Year {
-  value: string;
-  viewValue: string;
-
-  constructor(value: number, viewValue: number) {
-    this.value = value.toString();
-    this.viewValue = viewValue.toString();
-  }
-
-}
 
 @Component({
   selector: 'app-inspector-calendar',
@@ -39,14 +27,19 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
   yearOptions: Year[] = [];
   selectedYear: string = "";
 
+  monthOptions: Month[] = [];
+  selectedMonth: number;
+
   @Input() selectedDates: CalendarDate[] = [];
   @Output() onSelectDate = new EventEmitter<CalendarDate>();
 
-  constructor() { }
+  public constructor(private titleService: Title) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle("Paco Rosa Cotecna Exercise");
     this.generateCalendar();
     this.yearOptions = this.loadYearOptions();
+    this.monthOptions = this.loadMonths();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -73,6 +66,65 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
     return result;
   }
 
+  loadMonths(): Month[] {
+    let result: Month[] = [
+      {
+        value: 0,
+        locale: "en-US",
+        name: "January"
+      },
+      {
+        value: 1,
+        locale: "en-US",
+        name: "February"
+      }, {
+        value: 2,
+        locale: "en-US",
+        name: "March"
+      }, {
+        value: 3,
+        locale: "en-US",
+        name: "April"
+      }, {
+        value: 4,
+        locale: "en-US",
+        name: "May"
+      }, {
+        value: 5,
+        locale: "en-US",
+        name: "June"
+      }, {
+        value: 6,
+        locale: "en-US",
+        name: "July"
+      }, {
+        value: 7,
+        locale: "en-US",
+        name: "August"
+      }, {
+        value: 8,
+        locale: "en-US",
+        name: "September"
+      }, {
+        value: 9,
+        locale: "en-US",
+        name: "October"
+      }, {
+        value: 10,
+        locale: "en-US",
+        name: "November"
+      }, {
+        value: 11,
+        locale: "en-US",
+        name: "December"
+      }
+    ];
+
+    this.selectedMonth = new Date().getMonth();
+
+    return result;
+  }
+
   // date checkers
 
   isToday(date: moment.Moment): boolean {
@@ -95,23 +147,8 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
 
   // actions from calendar
 
-  prevMonth(): void {
-    this.currentDate = moment(this.currentDate).subtract(1, 'months');
-    this.generateCalendar();
-  }
-
-  nextMonth(): void {
-    this.currentDate = moment(this.currentDate).add(1, 'months');
-    this.generateCalendar();
-  }
-
-  firstMonth(): void {
-    this.currentDate = moment(this.currentDate).startOf('year');
-    this.generateCalendar();
-  }
-
-  lastMonth(): void {
-    this.currentDate = moment(this.currentDate).endOf('year');
+  onMonthDdlChanged(month: Month): void {
+    this.currentDate = moment(this.currentDate).month(((month.value) as any));
     this.generateCalendar();
   }
 
