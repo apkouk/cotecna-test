@@ -1,12 +1,25 @@
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { MatSelectModule } from '@angular/material/select';
 import * as moment from 'moment';
 import * as _ from "lodash";
+import { Event } from '@angular/router';
 
-export interface CalendarDate {
+export class CalendarDate {
   mDate: moment.Moment;
   selected?: boolean;
   today?: boolean;
+}
+
+export class Year {
+  value: string;
+  viewValue: string;
+
+  constructor(value: number, viewValue: number) {
+    this.value = value.toString();
+    this.viewValue = viewValue.toString();
+  }
+
 }
 
 @Component({
@@ -17,10 +30,14 @@ export interface CalendarDate {
 
 export class InspectorCalendarComponent implements OnInit, OnChanges {
 
+
   currentDate = moment();
   dayNames = ['Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun'];
   weeks: CalendarDate[][] = [];
   sortedDates: CalendarDate[] = [];
+
+  yearOptions: Year[] = [];
+  selectedYear: string = "";
 
   @Input() selectedDates: CalendarDate[] = [];
   @Output() onSelectDate = new EventEmitter<CalendarDate>();
@@ -29,11 +46,31 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.generateCalendar();
+    this.yearOptions = this.loadYearOptions();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.generateCalendar();
 
+  }
+
+  // load dropdowns
+
+  loadYearOptions(): Year[] {
+
+    let result: Year[] = [];
+    var currentYear = new Date().getFullYear();
+    var firstYear = currentYear - 10;
+
+    for (var i = 1; i < 21; i++) {
+      let year: Year = new Year(firstYear + i, firstYear + i);
+      result.push(year);
+
+      if (year.value === currentYear.toString())
+        this.selectedYear = year.value;
+    }
+
+    return result;
   }
 
   // date checkers
@@ -78,13 +115,8 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
     this.generateCalendar();
   }
 
-  prevYear(): void {
-    this.currentDate = moment(this.currentDate).subtract(1, 'year');
-    this.generateCalendar();
-  }
-
-  nextYear(): void {
-    this.currentDate = moment(this.currentDate).add(1, 'year');
+  onYearDdlChanged(year: Year): void {
+    this.currentDate = moment(this.currentDate).year(((year.value) as any));
     this.generateCalendar();
   }
 

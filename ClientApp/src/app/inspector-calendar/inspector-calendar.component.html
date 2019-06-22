@@ -1,14 +1,20 @@
 <div class="calendar">
   <div class="calendar-navs">
     <div class="month-nav">
+      <mat-form-field>
+        <mat-label>Year</mat-label>
+        <mat-select [(ngModel)]="selectedYear" (selectionChange)="onYearDdlChanged($event)">
+          <mat-option *ngFor="let year of yearOptions" [value]="year.value">
+            {{year.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="month-nav">
       <button (click)="prevMonth()">&lt;</button>
       <span class="p4">{{ currentDate.format('MMMM') }}</span>
       <button (click)="nextMonth()">&gt;</button>
-    </div>
-    <div class="year-nav">
-      <button (click)="prevYear()">&lt;</button>
-      <span>{{ currentDate.format('YYYY') }}</span>
-      <button (click)="nextYear()">&gt;</button>
     </div>
   </div>
   <div class="month-grid">
