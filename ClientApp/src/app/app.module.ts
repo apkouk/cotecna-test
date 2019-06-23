@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { InspectorCalendarComponent } from './inspector-calendar/inspector-calendar.component';
+import { WeatherService } from 'src/app/services/weather/weather-service';
+import { WeatherServiceResolver } from './services/weather/weather-service-resolver';
 
 @NgModule({
   declarations: [
@@ -22,10 +24,14 @@ import { InspectorCalendarComponent } from './inspector-calendar/inspector-calen
     MatSelectModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([
-      { path: '', component: InspectorCalendarComponent, pathMatch: 'full' }
+      {
+        path: '', component: InspectorCalendarComponent,
+        pathMatch: 'full',
+        resolve: { weatherServiceResolver: WeatherServiceResolver }
+      }
     ])
   ],
-  providers: [Title],
+  providers: [Title, WeatherService, WeatherServiceResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

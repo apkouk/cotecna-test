@@ -1,16 +1,23 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import * as _ from "lodash";
 import * as moment from 'moment';
 import { months } from "../../data/month-data";
 import { CalendarDate } from "../models/CalendarDate";
+import { DayWeather } from '../models/DayWeather';
 import { Month } from "../models/Month";
 import { Year } from "../models/Year";
+import { WeatherService } from '../services/weather/weather-service';
+import { WeatherServiceResolver } from '../services/weather/weather-service-resolver';
+import { ActivatedRoute } from '@angular/router';
+import 'rxjs/add/operator/finally';
 
 @Component({
   selector: 'app-inspector-calendar',
   templateUrl: './inspector-calendar.component.html',
-  styleUrls: ['./inspector-calendar.component.scss']
+  styleUrls: ['./inspector-calendar.component.scss'],
+  providers: [WeatherService, WeatherServiceResolver]
 })
 
 export class InspectorCalendarComponent implements OnInit, OnChanges {
@@ -25,10 +32,12 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
   monthOptions: Month[] = [];
   selectedMonth: number;
 
+  weatherDays: DayWeather[] = [];
+
   @Input() selectedDates: CalendarDate[] = [];
   @Output() onSelectDate = new EventEmitter<CalendarDate>();
 
-  public constructor(private titleService: Title) { }
+  public constructor(private titleService: Title, private weatherService: WeatherService, public router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.titleService.setTitle("Paco Rosa Cotecna Exercise");
@@ -111,6 +120,7 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
   fillDates(currentMoment: moment.Moment): CalendarDate[] {
     const firstOfMonth = moment(currentMoment).startOf('month').day() - 1;
     const firstDayOfGrid = moment(currentMoment).startOf('month').subtract(firstOfMonth, 'days');
+    this.getForecast(this.currentDate.month());
     const start = firstDayOfGrid.date();
     return _.range(start, start + 42)
       .map((date: number): CalendarDate => {
@@ -119,7 +129,22 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
           today: this.isToday(d),
           selected: this.isSelected(d),
           mDate: d,
+          weather: this.getDayWeather(d)
         };
       });
+  }
+
+  async getForecast(selectedMonth: number) {
+    if (selectedMonth === new Date().getMonth()) {
+      this.route.data.map((data: any) => data.weatherServiceResolver).subscribe((response: DayWeather[]) => response.forEach(row => {
+        this.weatherDays.push(row);
+      }));
+    }
+  }
+
+  getDayWeather(moment): DayWeather {
+    return this.weatherDays.filter(x =>
+      new Date(x.date).getDate() === moment.date() &&
+      new Date(x.date).getMonth() === moment.month())[0];
   }
 }
