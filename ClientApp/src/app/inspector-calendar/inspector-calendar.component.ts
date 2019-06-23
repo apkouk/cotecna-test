@@ -33,8 +33,8 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.titleService.setTitle("Paco Rosa Cotecna Exercise");
     this.generateCalendar();
-    this.yearOptions = this.loadYearOptions();
-    this.monthOptions = this.loadMonths();
+    this.yearOptions = this.loadYearsDdl();
+    this.monthOptions = this.loadMonthsDdl();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -43,7 +43,7 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
 
   // load dropdowns
 
-  loadYearOptions(): Year[] {
+  loadYearsDdl(): Year[] {
     let result: Year[] = [];
     var currentYear = new Date().getFullYear();
     var firstYear = currentYear - 10;
@@ -59,7 +59,7 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
     return result;
   }
 
-  loadMonths(): Month[] {
+  loadMonthsDdl(): Month[] {
     let result: Month[] = months;
     this.selectedMonth = new Date().getMonth();
     return result;

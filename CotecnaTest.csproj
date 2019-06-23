@@ -15,6 +15,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,11 +26,28 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\data\city-data.ts" />
     <None Remove="ClientApp\src\data\month-data.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OpenWeatherMap.Service\OpenWeatherMap.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\data\city-data.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="ClientApp\src\data\month-data.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ClientApp\src\data\city-data.js">
+      <DependentUpon>city-data.ts</DependentUpon>
+    </None>
+    <None Update="ClientApp\src\data\city-data.js.map">
+      <DependentUpon>city-data.js</DependentUpon>
+    </None>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
