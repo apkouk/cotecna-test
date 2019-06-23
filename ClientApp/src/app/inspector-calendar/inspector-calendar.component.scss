@@ -1,138 +1,144 @@
-$dayBase: 70px;
-$cloud:'#ccc';
-$base:5px;
-$concrete:'#fff';
-$seafoam:'blue';
-$white:'#fff';
-$teal:'black';
-$light-blue-grey:'#888';
+$dayBase: 140px;
+$cloud: '#ccc';
+$base: 5px;
+$concrete: '#fff';
+$seafoam: 'blue';
+$white: '#fff';
+$teal: 'black';
+$light-blue-grey: '#888';
 
 .calendar {
   display: block;
   width: $dayBase * 7;
   margin: 0 auto;
-*
 
-{
-  box-sizing: border-box;
-}
+  * {
+    box-sizing: border-box;
+  }
 
-.calendar-navs {
-  background-color: $cloud;
-}
+  .calendar-navs {
+    background-color: $cloud;
+  }
 
-.month-nav {
-  padding: $base;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
+  .month-nav {
+    padding: $base;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    float: left;
+  }
 
-.year-nav {
-  padding: $base;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  font-family: 'Montserrat';
-}
+  .year-nav {
+    padding: $base;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: 'Montserrat';
+  }
 
-.month-grid {
-.day-names
+  .weather-info {
+    font-size: 13px;
+    font-weight: 700;
+    color: lightgray;
+  }
 
-{
-  display: flex;
-  flex-direction: row;
-  background: $concrete;
-  border-bottom-right-radius: 3px;
-  border-bottom-left-radius: 3px;
-}
+  .month-grid {
+    float: left;
 
-.weeks {
-  display: flex;
-  flex-direction: column;
-}
+    .day-names {
+      display: flex;
+      flex-direction: row;
+      background: $concrete;
+      border-bottom-right-radius: 3px;
+      border-bottom-left-radius: 3px;
+      justify-content: space-evenly;
+    
+  }
 
-.week {
-  display: flex;
-  flex-direction: row;
-}
+  .weeks {
+    display: flex;
+    flex-direction: column;
+  }
 
-.week-date,
-.day-name {
-  text-align: center;
-  padding: $base;
-  display: block;
-  width: $dayBase;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .week {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+  }
 
-.week-date {
-  height: $dayBase;
-  position: relative;
-.date-text
+  .week-date,
+  .day-name {
+    text-align: center;
+    display: block;
+    width: $dayBase;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    font-weight: 700;
+  }
 
-{
-  z-index: 10;
-  font-size: 15px;
-  font-family: 'Montserrat', sans-serif;
-}
 
-&::after {
-   content: '';
-   height: $dayBase * 0.9;
-   width: $dayBase * 0.9;
-   position: absolute;
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   border-radius: 50%;
-   transition: background-color 150ms linear, color 150ms linear;
-   z-index: 1;
- }
+  .day-name-header {
+    font-weight: 800;
+    color: #1a85ed;
+  }
 
-&.enabled {
-   cursor: pointer;
-&:hover
+  .week-date {
+    height: 40px;
+    position: relative;
 
- {
-&:after
+    .date-text {
+      z-index: 10;
+      font-size: 15px;
+      font-family: 'Montserrat', sans-serif;
+    }
 
- {
-   background-color: $seafoam;
- }
+    &::after {
+      content: '';
+      height: $dayBase * 0.9;
+      width: $dayBase * 0.9;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      transition: background-color 150ms linear, color 150ms linear;
+      z-index: 1;
+    }
 
-}
-}
+    &.enabled {
+      cursor: pointer;
 
-&.selected {
-   color: $white;
-&:after
+      &:hover {
+        &:after {
+          background-color: $seafoam;
+        }
+      }
+    }
 
- {
-   background-color: $teal;
- }
+    &.selected {
+      color: $white;
 
-&:hover {
-&:after
+      &:after {
+        background-color: $teal;
+      }
 
- {
-   background-color: $teal;
- }
+      &:hover {
+        &:after {
+          background-color: $teal;
+        }
+      }
+    }
 
-}
-}
+    &.disabled {
+      color: $light-blue-grey;
+    }
+  }
 
-&.disabled {
-   color: $light-blue-grey;
- }
-
-}
-
-.today {
-  font-weight: bold;
-}
-
+  .today {
+    font-weight: bold;
+    font-size: large;
+    color: orangered;
+  }
 }
 }

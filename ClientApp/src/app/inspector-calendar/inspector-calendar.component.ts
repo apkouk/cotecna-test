@@ -37,7 +37,7 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
   @Input() selectedDates: CalendarDate[] = [];
   @Output() onSelectDate = new EventEmitter<CalendarDate>();
 
-  public constructor(private titleService: Title, private weatherService: WeatherService, public router: Router, private route: ActivatedRoute) { }
+  public constructor(private titleService: Title, public router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.titleService.setTitle("Paco Rosa Cotecna Exercise");
@@ -143,8 +143,10 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
   }
 
   getDayWeather(moment): DayWeather {
-    return this.weatherDays.filter(x =>
+    let result: DayWeather = this.weatherDays.filter(x =>
       new Date(x.date).getDate() === moment.date() &&
       new Date(x.date).getMonth() === moment.month())[0];
+
+    return result !== undefined ? result : DayWeather.createEmptyObject();
   }
 }
