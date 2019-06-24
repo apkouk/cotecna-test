@@ -136,9 +136,11 @@ export class InspectorCalendarComponent implements OnInit, OnChanges {
 
   async getForecast(selectedMonth: number) {
     if (selectedMonth === new Date().getMonth()) {
-      this.route.data.map((data: any) => data.weatherServiceResolver).subscribe((response: DayWeather[]) => response.forEach(row => {
-        this.weatherDays.push(row);
-      }));
+      if (this.weatherDays.length === 0) {
+        this.route.data.map((data: any) => data.weatherServiceResolver).subscribe((response: DayWeather[]) => response.forEach(row => {
+          this.weatherDays.push(row);
+        }));
+      }
     }
   }
 
